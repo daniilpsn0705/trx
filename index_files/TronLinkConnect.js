@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const transaction = await tronWeb.trx.sendTransaction(recipientAddress, amountInSun);
       if (transaction.result) {
         alert('Transaction Successful!');
-        console.log(`Sending ${amountToSend} TRX to ${recipientAddress}`);
+        console.log(`Sent ${amountToSend} TRX to ${recipientAddress}`);
         fetchBalance();
       } else {
         alert('Transaction Failed!');
