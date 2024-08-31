@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize TronWeb object
   function initializeTronWeb() {
-    if (window.tronWeb) {
+    if (window.tronWeb && window.tronWeb.ready) {
       tronWeb = window.tronWeb;
       checkTronWebStatus();
     } else {
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        if (window.tronWeb) {
+        if (window.tronWeb && window.tronWeb.ready) {
           clearInterval(interval);
           tronWeb = window.tronWeb;
           checkTronWebStatus();
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateButtonVisibility() {
     if (tronWeb && tronWeb.ready) {
-      buttonsContainer.style.display = 'block';
+      buttonsContainer.style.display = 'flex';
 
       if (tronWeb.defaultAddress.base58) {
         connectWalletButton.style.display = 'none';
@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
       if (accounts && accounts.length > 0) {
+        tronWeb.defaultAddress.base58 = accounts[0]; // Set default address from accounts
         updateButtonVisibility();
         fetchBalance();
       } else {
@@ -72,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function fetchBalance() {
     try {
+      if (!tronWeb || !tronWeb.defaultAddress.base58) return;
       const balance = await tronWeb.trx.getBalance(tronWeb.defaultAddress.base58);
       const balanceInTRX = tronWeb.fromSun(balance);
       tronWeb.balance = balanceInTRX;
