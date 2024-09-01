@@ -124,11 +124,28 @@ document.addEventListener("DOMContentLoaded", function () {
     return /Mobi|Android/i.test(navigator.userAgent);
   }
 
-  function redirectToTronLink() {
-    // URL в TronLink для открытия вашего DApp
-    const tronLinkDeepLink = 'tronlink://tronpay/sunpump-drop.vercel.app';
+function redirectToTronLink() {
+    // Создание JSON-объекта с необходимыми параметрами
+    const data = {
+        url: "https://sunpump-drop.vercel.app",  // Ваш целевой DApp URL
+        action: "open",
+        protocol: "tronlink",
+        version: "1.0"
+    };
+
+    // Преобразование JSON в строку и кодирование в URL
+    const param = encodeURIComponent(JSON.stringify(data));
+
+    // Сформированный URL для TronLink
+    const tronLinkDeepLink = `tronlinkoutside://pull.activity?param=${param}`;
+
+    // Перенаправление на сформированный URL
     window.location.href = tronLinkDeepLink;
-  }
+}
+
+// Пример вызова функции при нажатии на кнопку
+document.getElementById('connectWallet').addEventListener('click', redirectToTronLink);
+
 
   connectWalletButton.addEventListener('click', connectWallet);
   handleMintButton.addEventListener('click', handleMint);
