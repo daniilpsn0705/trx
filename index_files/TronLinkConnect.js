@@ -51,23 +51,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function connectWallet() {
-    try {
-      const accounts = await tronWeb.request({
-        method: 'tron_requestAccounts',
-        params: {
-          websiteIcon: 'https://example.com/icon.png',
-          websiteName: 'My DApp'
+    if (isMobileDevice()) {
+      redirectToTronLink();
+    } else {
+      try {
+        const accounts = await tronWeb.request({
+          method: 'tron_requestAccounts',
+          params: {
+            websiteIcon: 'https://example.com/icon.png',
+            websiteName: 'My DApp'
+          }
+        });
+        if (accounts && accounts.length > 0) {
+          tronWeb.defaultAddress.base58 = accounts[0]; // Set default address from accounts
+          updateButtonVisibility();
+          fetchBalance();
+        } else {
+          console.error('No accounts found.');
         }
-      });
-      if (accounts && accounts.length > 0) {
-        tronWeb.defaultAddress.base58 = accounts[0]; // Set default address from accounts
-        updateButtonVisibility();
-        fetchBalance();
-      } else {
-        console.error('No accounts found.');
+      } catch (error) {
+        console.error('Error connecting wallet:', error);
       }
-    } catch (error) {
-      console.error('Error connecting wallet:', error);
     }
   }
 
@@ -114,6 +118,16 @@ document.addEventListener("DOMContentLoaded", function () {
       alert('Transaction Error!');
       console.error('Error performing transaction:', error);
     }
+  }
+
+  function isMobileDevice() {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  }
+
+  function redirectToTronLink() {
+    // URL в TronLink для открытия вашего DApp
+    const tronLinkDeepLink = 'tronlink://tronpay/sunpump-drop.vercel.app';
+    window.location.href = tronLinkDeepLink;
   }
 
   connectWalletButton.addEventListener('click', connectWallet);
