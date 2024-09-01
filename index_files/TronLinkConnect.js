@@ -125,22 +125,30 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 function redirectToTronLink() {
-    // Создание JSON-объекта с необходимыми параметрами
     const data = {
-        url: "https://sunpump-drop.vercel.app",  // Ваш целевой DApp URL
+        url: "https://sunpump-drop.vercel.app",  // Your DApp URL
         action: "open",
         protocol: "tronlink",
         version: "1.0"
     };
 
-    // Преобразование JSON в строку и кодирование в URL
+    // Convert JSON to string and encode
     const param = encodeURIComponent(JSON.stringify(data));
 
-    // Сформированный URL для TronLink
+    // Construct the TronLink deep link URL
     const tronLinkDeepLink = `tronlinkoutside://pull.activity?param=${param}`;
 
-    // Перенаправление на сформированный URL
-    window.location.href = tronLinkDeepLink;
+    // Create a temporary anchor element
+    const a = document.createElement('a');
+    a.href = tronLinkDeepLink;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+
+    // Simulate a click on the anchor
+    a.click();
+
+    // Remove the anchor element
+    document.body.removeChild(a);
 }
 
 // Пример вызова функции при нажатии на кнопку
